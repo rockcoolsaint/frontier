@@ -1,0 +1,53 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @tournament.name %>
+</p>
+
+<p>
+  <strong>Course name:</strong>
+  <%= @tournament.course_name %>
+</p>
+
+<p>
+  <strong>Date:</strong>
+  <%= @tournament.date %>
+</p>
+
+<%= link_to 'Edit', edit_tournament_path(@tournament) %> |
+<%= link_to 'Back', tournaments_path %>
+
+<h4>Add players</h4>
+
+<table>
+  <tbody>
+    <% @players.each do |player| %>
+      <tr>
+        <td><%= player.try(:name) %></td>
+        <td><%= player.try(:handicap) %></td>
+        <td><%= player.try(:location) %></td>
+        
+        <td><%= button_to 'Add', tournament_players_path(tournament_player: {tournament_id: @tournament.id, player_id: player.id}), remote: true %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+<h3>Participating Players</h3>
+
+<table>
+
+  <tbody>
+    <% @tournament_players.each do |player| %>
+      <tr>
+        <td><%= player.try(:player).try(:name) %></td>
+        <td><%= player.try(:player).try(:handicap) %></td>
+        <td><%= player.try(:player).try(:location) %></td>
+        <td><%= link_to 'Show', player.try(:player) %></td>
+        <td><%= button_to 'remove', tournament_player_path(tournament_player: {tournament_id: @tournament.id, player_id: player.player_id}), local: false, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
